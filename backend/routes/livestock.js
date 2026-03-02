@@ -1,17 +1,26 @@
-// routes/livestock.js
 const express = require('express');
 const router = express.Router();
+const ProductController = require('../controllers/productController');
+const { uploadFields, handleUploadError } = require('../middleware/upload');
+const { authenticate } = require('../middleware/auth');
+const { productValidation } = require('../middleware/validation');
 
-// Example livestock data
-const livestockData = [
-  { id: 1, type: 'Sheep', count: 50 },
-  { id: 2, type: 'Goat', count: 30 },
-  { id: 3, type: 'Hen', count: 200 }
-];
+// Public routes
+router.get('/', ProductController.getAllLivestock);
+router.get('/:id', ProductController.getLivestockById);
 
-// GET /livestock
-router.get('/', (req, res) => {
-  res.json(livestockData);
-});
+// Protected routes
+router.post('/',
+  authenticate,
+  uploadFields,
+  handleUploadError,
+  productValidation,
+  ProductController.createLivestock
+);
+
+router.patch('/:id/status',
+  authenticate,
+  ProductController.updateProductStatus
+);
 
 module.exports = router;
