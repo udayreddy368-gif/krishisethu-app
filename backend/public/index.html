@@ -126,6 +126,12 @@
             font-size: 0.9em;
         }
 
+        .btn-product {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
         .endpoints {
             background: white;
             border-radius: 20px;
@@ -290,7 +296,12 @@
             <div class="card">
                 <h2>📦 Products</h2>
                 <p>Browse livestock, grains, and vegetables with images and detailed information.</p>
-                <a href="/api/livestock" class="btn btn-small">View Products</a>
+                <button onclick="showProductOptions()" class="btn">View Products</button>
+                <div id="product-options" style="display: none; margin-top: 20px;">
+                    <a href="/api/livestock" class="btn btn-small btn-product">🐑 Livestock</a>
+                    <a href="/api/grains" class="btn btn-small btn-product">🌽 Grains</a>
+                    <a href="/api/vegetables" class="btn btn-small btn-product">🥕 Vegetables</a>
+                </div>
             </div>
         </div>
 
@@ -358,6 +369,10 @@
     </div>
 
     <script>
+        function showProductOptions() {
+            document.getElementById('product-options').style.display = 'block';
+        }
+
         // Fetch and display stats
         async function loadStats() {
             try {
