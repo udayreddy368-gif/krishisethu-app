@@ -296,7 +296,7 @@
             <div class="card">
                 <h2>📦 Products</h2>
                 <p>Browse livestock, grains, and vegetables with images and detailed information.</p>
-                <button onclick="showProductOptions()" class="btn">View Products</button>
+                <a href="javascript:void(0)" onclick="showProductOptions()" class="btn">View Products</a>
                 <div id="product-options" style="display: none; margin-top: 20px;">
                     <a href="/api/livestock" class="btn btn-small btn-product">🐑 Livestock</a>
                     <a href="/api/grains" class="btn btn-small btn-product">🌽 Grains</a>
@@ -370,7 +370,13 @@
 
     <script>
         function showProductOptions() {
-            document.getElementById('product-options').style.display = 'block';
+            const options = document.getElementById('product-options');
+            if (options.style.display === 'none' || options.style.display === '') {
+                options.style.display = 'block';
+            } else {
+                options.style.display = 'none';
+            }
+            return false;
         }
 
         // Fetch and display stats
