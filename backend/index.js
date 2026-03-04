@@ -17,6 +17,7 @@ const livestockRoutes = require('./routes/livestock');
 const grainsRoutes = require('./routes/grains');
 const vegetablesRoutes = require('./routes/vegetables');
 const farmersRoutes = require('./routes/farmers');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -32,6 +33,7 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 // Serve static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/api/auth', authRoutes);
 
 // ========== INITIALIZE DATABASE ==========
 initializeDatabase().catch(console.error);
