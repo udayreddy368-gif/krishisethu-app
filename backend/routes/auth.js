@@ -4,6 +4,20 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('../config/database');
 
+// GET login - informational (for the Sign In link)
+router.get('/login', (req, res) => {
+  res.json({ 
+    message: 'Please use POST to /api/auth/login with email/phone, password, and role.' 
+  });
+});
+
+// GET register - informational (for the Sign Up link)
+router.get('/register', (req, res) => {
+  res.json({ 
+    message: 'Please use POST to /api/auth/register with name, phone, email, password, role, etc.' 
+  });
+});
+
 // Sign Up - Register
 router.post('/register', async (req, res) => {
   try {
