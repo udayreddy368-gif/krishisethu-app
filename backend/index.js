@@ -23,7 +23,18 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ========== MIDDLEWARE ==========
-app.use(helmet()); // Security headers
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:", "https:"],
+      },
+    },
+  })
+); // Security headers
 app.use(cors()); // Enable CORS
 app.use(compression()); // Compress responses
 app.use(morgan('dev')); // Logging
