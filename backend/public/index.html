@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KrishiSethu - Agriculture Marketplace</title>
     <style>
+        /* (keep all existing styles) */
         * {
             margin: 0;
             padding: 0;
@@ -291,21 +292,18 @@
             </div>
         </div>
 
-        <!-- Farmer Actions Card (hidden by default) -->
-        <div class="card" id="farmer-actions-card" style="display: none; margin-bottom: 30px;">
-            <h2>👨‍🌾 Farmer Actions</h2>
-            <p>Add your products to sell</p>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <a href="/add-livestock.html" class="btn btn-small btn-product">➕ Add Livestock</a>
-                <!-- Add more for grains, vegetables later -->
-            </div>
-        </div>
-
         <div class="cards-grid">
-            <div class="card">
+            <!-- Farmer Card with ID and inner actions div -->
+            <div class="card" id="farmer-card">
                 <h2>👨‍🌾 For Farmers</h2>
                 <p>List your livestock, grains, and vegetables. Reach thousands of buyers directly. Get fair prices for your produce.</p>
                 <a href="/api/farmers" class="btn btn-small">View Farmers API</a>
+                <!-- Farmer actions appear here when logged in -->
+                <div id="farmer-actions-inside" style="margin-top: 20px; display: none;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">Your Selling Tools</h3>
+                    <a href="/add-livestock.html" class="btn btn-small btn-product">➕ Add Livestock</a>
+                    <!-- Add more actions later -->
+                </div>
             </div>
             <div class="card">
                 <h2>🛒 For Buyers</h2>
@@ -424,25 +422,25 @@
             const token = localStorage.getItem('token');
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             const authDiv = document.getElementById('auth-buttons');
-            const farmerCard = document.getElementById('farmer-actions-card');
+            const farmerActionsDiv = document.getElementById('farmer-actions-inside');
 
             if (token && user.name) {
                 authDiv.innerHTML = `
                     <span style="color: white; margin-right: 15px;">Welcome, ${user.name}</span>
                     <button onclick="logout()" class="btn btn-small" style="background: #f56565;">Logout</button>
                 `;
-                // Show farmer actions if role is farmer
+                // Show farmer actions inside the farmer card if role is farmer
                 if (user.role === 'farmer') {
-                    farmerCard.style.display = 'block';
+                    farmerActionsDiv.style.display = 'block';
                 } else {
-                    farmerCard.style.display = 'none';
+                    farmerActionsDiv.style.display = 'none';
                 }
             } else {
                 authDiv.innerHTML = `
                     <a href="/public/login.html" class="btn btn-small" style="margin-right: 10px; background: #48bb78;">Sign In</a>
                     <a href="/public/register.html" class="btn btn-small" style="background: #f59e0b;">Sign Up</a>
                 `;
-                farmerCard.style.display = 'none';
+                farmerActionsDiv.style.display = 'none';
             }
         }
 
