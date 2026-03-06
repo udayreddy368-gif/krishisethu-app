@@ -132,6 +132,10 @@
             margin-bottom: 10px;
         }
 
+        .btn-warning {
+            background: #f56565;
+        }
+
         .endpoints {
             background: white;
             border-radius: 20px;
@@ -263,9 +267,9 @@
             <p class="subtitle">Connecting Farmers with Buyers - Agriculture Marketplace API</p>
         </header>
 
-        <div style="position: absolute; top: 20px; right: 20px;">
-            <a href="/public/login.html" class="btn btn-small" style="margin-right: 10px; background: #48bb78;">Sign In</a>
-            <a href="/public/register.html" class="btn btn-small" style="background: #f59e0b;">Sign Up</a>
+        <!-- Dynamic auth buttons container -->
+        <div style="position: absolute; top: 20px; right: 20px;" id="auth-buttons">
+            <!-- Populated by JavaScript -->
         </div>
 
         <div class="stats-container">
@@ -284,6 +288,16 @@
             <div class="stat-card">
                 <div class="stat-number" id="revenue">₹0</div>
                 <div class="stat-label">Total Revenue</div>
+            </div>
+        </div>
+
+        <!-- Farmer Actions Card (hidden by default) -->
+        <div class="card" id="farmer-actions-card" style="display: none; margin-bottom: 30px;">
+            <h2>👨‍🌾 Farmer Actions</h2>
+            <p>Add your products to sell</p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="/add-livestock.html" class="btn btn-small btn-product">➕ Add Livestock</a>
+                <!-- Add more for grains, vegetables later -->
             </div>
         </div>
 
@@ -405,7 +419,44 @@
             }
         }
 
+        // Authentication UI handler
+        function updateAuthUI() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const authDiv = document.getElementById('auth-buttons');
+            const farmerCard = document.getElementById('farmer-actions-card');
+
+            if (token && user.name) {
+                authDiv.innerHTML = `
+                    <span style="color: white; margin-right: 15px;">Welcome, ${user.name}</span>
+                    <button onclick="logout()" class="btn btn-small" style="background: #f56565;">Logout</button>
+                `;
+                // Show farmer actions if role is farmer
+                if (user.role === 'farmer') {
+                    farmerCard.style.display = 'block';
+                } else {
+                    farmerCard.style.display = 'none';
+                }
+            } else {
+                authDiv.innerHTML = `
+                    <a href="/public/login.html" class="btn btn-small" style="margin-right: 10px; background: #48bb78;">Sign In</a>
+                    <a href="/public/register.html" class="btn btn-small" style="background: #f59e0b;">Sign Up</a>
+                `;
+                farmerCard.style.display = 'none';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            updateAuthUI();
+            window.location.reload(); // Refresh to clear any cached state
+        }
+
+        // Initial calls
         loadStats();
+        updateAuthUI();
+
         // Refresh stats every 30 seconds
         setInterval(loadStats, 30000);
     </script>
